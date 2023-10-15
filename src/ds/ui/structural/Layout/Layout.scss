@@ -1,0 +1,29 @@
+
+
+.layout {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  inset: 0;
+  background-color: antiquewhite;
+  overflow-y: auto;
+  justify-content: space-evenly;
+  gap: 32px;
+}
+
+.layout__sider {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  flex-grow: 1;
+  flex-basis: 320px;
+  display: flex;
+}
+
+.layout__content {
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
+  height: 150vh;
+  flex-grow: 2;
+}
