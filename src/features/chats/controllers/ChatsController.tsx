@@ -2,54 +2,71 @@ import { makeAutoObservable } from "mobx";
 import React from "react";
 
 import { Chat } from "../domain/Chat";
-import type { User } from "@/features/users/domain/User";
+import { getChats } from "../api/getChats";
 
-export class AsyncData {
-  private _state: AsyncDataStates = AsyncDataStates.IDLE;
-  public constructor() {}
+import type { User, UserId } from "@/features/users/domain/User";
 
-  public get data(): 10 {
-    return 10;
-  }
-}
-
-export const AsyncDataStates: AsyncDataStateEnum = {
-  IDLE: "IDLE",
-  LOADING: "LOADING",
-  READY: "READY",
-  ERROR: "ERROR",
-};
-
-export type AsyncDataStates = keyof AsyncDataStateEnum;
-
-type TupleToEnum<T extends readonly string[]> = {
-  readonly [P in Uppercase<T[number]>]: Uppercase<P>;
-};
-
-type AsyncDataStateEnum = TupleToEnum<["idle", "loading", "ready", "error"]>;
-
-class ChatsController {
-  public readonly chats: Record<User["id"], Chat> = {};
-  public readonly users: Record<User["id"], User> = {};
-  public readonly chatsMap: Map<User["id"], Chat> = new Map();
-  public readonly activeChats: Chat[] = [];
+export class ChatsController {
+  public readonly chats: Record<UserId, Chat> = {};
+  public readonly users: Record<UserId, User> = {};
+  public readonly chatsMap: Map<UserId, Chat> = new Map();
+  public readonly activeChats: Record<UserId, Chat> = {};
+  public activeChatUser: UserId = "todas";
+  public state: string = "idle";
 
   public constructor() {
     makeAutoObservable(this);
   }
-  //
-  public openChat = (userId: User["id"]) => {
-    let chat = this.chats[userId];
 
-    const test = new Map<User["id"], Chat>();
-    test.get(userId);
+  public *loadChats(): Generator<ReturnType<typeof getChats>, void, Chat[]> {
+    if (this.state === "pending") return;
+
+    this.state = "pending";
+    const chats = yield getChats();
+
+    chats.map((chat) => {
+      this.chats[chat.user.id] = chat;
+    });
+
+    this.state = "ready";
+  }
+
+  public get activeChatsTabs() {
+    const messageChats = Object.values(this.activeChats).map(({ user }) => ({
+      key: user.id,
+      tab: user.name,
+    }));
+
+    return [
+      {
+        key: "todas",
+        tab: "Todas",
+      },
+      ...messageChats,
+    ];
+  }
+
+  public get activeChat() {
+    return this.chats[this.activeChatUser];
+  }
+
+  public onSwitchChat = (userId: UserId) => {
+    this.activeChatUser = userId;
+  };
+
+  public openChat = (user: User) => {
+    let chat = this.chats[user.id];
 
     if (!chat) {
-      const user = this.users[userId];
       chat = new Chat({ user });
+      this.chats[user.id] = chat;
     }
 
-    this.activeChats.push(chat);
+    if (!(user.id in this.activeChats)) {
+      this.activeChats[user.id] = chat;
+    }
+
+    this.activeChatUser = user.id;
   };
 }
 

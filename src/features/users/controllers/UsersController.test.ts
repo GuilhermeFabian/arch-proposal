@@ -10,10 +10,12 @@ describe("UsersController", () => {
     const user1 = new User({
       id: faker.string.uuid(),
       name: faker.person.fullName(),
+      online: faker.number.int({ min: 0, max: 1 }) === 0,
     });
     const user2 = new User({
       id: faker.string.uuid(),
       name: faker.person.fullName(),
+      online: faker.number.int({ min: 0, max: 1 }) === 0,
     });
 
     getUsersSpy.mockReturnValueOnce(Promise.resolve([user1, user2]));

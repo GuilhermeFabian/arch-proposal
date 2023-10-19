@@ -5,25 +5,40 @@
   display: flex;
   flex-direction: row;
   inset: 0;
-  background-color: antiquewhite;
-  overflow-y: auto;
-  justify-content: space-evenly;
+  background-color: lightblue;
+  overflow: hidden;
   gap: 32px;
+  max-height: 100vh;
+  max-width: 100vw;
 }
 
-.layout__sider {
+@mixin layout-base {
   position: sticky;
   top: 0;
   max-height: 100vh;
   flex-grow: 1;
   flex-basis: 320px;
   display: flex;
+  min-width: 320px;
+}
+
+.layout__sider {
+  &-left {
+    @include layout-base;
+    justify-content: start;
+  }
+
+  &-right {
+    @include layout-base;
+    justify-content: end;
+  }
 }
 
 .layout__content {
   max-width: 1024px;
+  min-width: 320px;
+  max-height: 100vh;
   width: 100%;
-  margin: 0 auto;
-  height: 150vh;
+  // height: 150vh;
   flex-grow: 2;
 }

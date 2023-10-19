@@ -1,0 +1,189 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Mobx e a nova arquitetura do front",
+  "steps": [
+    {
+      "title": "Introdução",
+      "description": "# Os 20% do Mobx que resolvem 80% dos problemas - Um tour pela nova arquitetura do front\n\n1. Por que uma nova arquitetura?\n    - Problemas no react com classes (manutenabilidade, legibilidade, acoplamento, difícil de testar, performance)\n    - Problemas na estrutura de pastas do projeto\n2. Uma estruturação mais lógica\n3. Por que Mobx?\n    - Mobx é mais rápido que o próprio gerenciador de estados do react\n    - Mobx é simples de usar\n    - Mobx é otimiza seus componentes por você\n    - Mobx desacopla o código\n4. O que é Mobx?\n5. Como se usa o Mobx?\n6. Como se testa com Mobx?\n7. Como mobx se encaixa na nova arquitetura?\n8. Casos excepcionais da arquitetura\n\n\n\n",
+      "selection": {
+        "start": {
+          "line": 16,
+          "character": 4
+        },
+        "end": {
+          "line": 16,
+          "character": 37
+        }
+      }
+    },
+    {
+      "title": "Por que uma nova arquitetura?",
+      "description": "# Por que uma nova arquitetura?\n\n### 1. Problemas no react com classes\n\nAo olharmos para a codebase do projeto atualmente, identificamos arquivos de componentes na casa de milhares de linhas, alto nível de acoplamento de código, problemas de performance, falta de uso ou uso errado de determinados conceitos do react, entre outros.\n\n### 2. Problema na estrutura de pastas\n\nAtualmente temos um enorme número de arquivos de componentes inseridos numa só pasta que fica difícil identificar o quê se relaciona com o quê sem debugar o código, tornando toda a estrutura confusa e de difícil compreensão e manutenção."
+    },
+    {
+      "title": "Uma estruturação mais lógica",
+      "description": "# Uma estruturação mais lógica\n\n### Estrutura de pastas orientada a features\n\nA estrutura de pastas orientada a features é uma maneira de organizar os arquivos concentrando tudo o que se refere a uma determinada feature numa só pasta representada por aquela feature. Deste modo conseguimos facilmente identificar a que parte do sistema aqueles arquivos representam, além de concentrar tudo o que diz respeito a uma feature num só lugar, de modo que, quando deprecarmos a feature e a formos remover do sistema, basta apenas apagar a pasta e tudo o que se refere à feature já terá sido removido."
+    },
+    {
+      "file": "src/features/chats/presentation/Chats.tsx",
+      "description": "O Entrypoint da nossa feature.",
+      "line": 6,
+      "title": "Camada de Apresentação (Presentation)"
+    },
+    {
+      "file": "src/features/chats/presentation/components/Conversation/Conversation.tsx",
+      "description": "Componentes que são utilizados somente no escopo de nossa feature.",
+      "line": 6,
+      "title": "Feature Components"
+    },
+    {
+      "file": "src/features/chats/presentation/providers/ChatsControllerProvider.tsx",
+      "description": "Camada que isola a lógica da feature sob o escopo da própria feature.",
+      "line": 9,
+      "title": "Controller Provider"
+    },
+    {
+      "file": "src/features/chats/controllers/ChatsController.tsx",
+      "description": "Camada lógica da feature.",
+      "line": 9,
+      "title": "Controller"
+    },
+    {
+      "file": "src/features/chats/domain/Chat.ts",
+      "description": "Camada de lógica de negócio e de desacoplamento de código.",
+      "line": 5,
+      "title": "Domain"
+    },
+    {
+      "file": "src/features/chats/api/getChats.ts",
+      "description": "Camada de API utilizada pelo controller.",
+      "line": 4,
+      "title": "API"
+    },
+    {
+      "title": "Por que Mobx?",
+      "description": "# Por que Mobx?\n\n### 1. Mobx é mais rápido que o próprio gerenciador de estados do react\n\nO React tem um sistema de gerenciamento de estado um tanto complexo, contando com alguns ciclos de vida, o que requer tempo de espera do ciclo de vida para de fato atualizar o estado do componente, diversas validações no meio do caminho e um tanto de processamento.\n\nEnquanto o Mobx, por estar desacoplado a toda essa estrutura do React, não necessita das diversas etapas processadas pelo React. Além disso, utiliza a estrutura de proxy do javascript, ou similar de modo que dispara suas callbacks imediatamente na chamada de método do objeto observado pelo mobx, tornando o processo muito rápido. É hoje a biblioteca de maior performance disponível no mercado.\n\n### Mobx é simples de usar\n\nVocê define apenas uma classe, chama uma função no contrutor da classe e envolve com uma função o componente onde se consumirá o estado do mobx.\n\n### Mobx é otimiza seus componentes por você\n\nMobx aplica em todo componente que envolve uma memoização, de modo que evita renderizações desnecessárias.\n\n### Mobx desacopla o código\n\nComo Mobx dispensa o uso de hooks do React, temos a possibilidade de incorporar nas classes Mobx toda a lógica de componente, tornando assim o código desacoplado e deixando para o React o papel único de renderizar interface, fazendo com que o código torne-se mais limpo e fácil de dar manutenção."
+    },
+    {
+      "title": "O que é Mobx?",
+      "description": "# O que é Mobx afinal?"
+    },
+    {
+      "file": "package.json",
+      "description": "Mobx é uma biblioteca para Javascript de gerenciamento de estados, como Vuex, Redux, Recoil, etc. Sua diferença é ser mais perfomático e agnóstico a biblioteca/framework.\n\nhttps://mobx.js.org/README.html",
+      "line": 18,
+      "title": "O que é Mobx?"
+    },
+    {
+      "title": "Como se usa o Mobx?",
+      "description": "# Como se usa o Mobx?\n\n[Mobx é simples!](https://mobx.js.org/README.html#a-quick-example)\n\n"
+    },
+    {
+      "file": "src/features/chats/controllers/ChatsController.tsx",
+      "description": "Definimos uma classe.",
+      "line": 9
+    },
+    {
+      "file": "src/features/chats/controllers/ChatsController.tsx",
+      "description": "Declaramos alguns atributos que serão nossos estados.",
+      "line": 10
+    },
+    {
+      "file": "src/features/chats/controllers/ChatsController.tsx",
+      "description": "Declaramos alguns comportamentos que atualizam os estados.",
+      "line": 57
+    },
+    {
+      "file": "src/features/chats/controllers/ChatsController.tsx",
+      "description": "Indicamos no construtor da classe que esta classe será controlada pelo Mobx.",
+      "line": 18
+    },
+    {
+      "file": "src/features/chats/presentation/components/ChatsList/ChatsList.tsx",
+      "description": "Envolvemos nosso componente com um observador do Mobx para que re-renderize quando um dos estados utilizado no componente for atualizado.",
+      "line": 5
+    },
+    {
+      "title": "Como se testa com Mobx?",
+      "description": "# Como se testa com Mobx?"
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.test.ts",
+      "description": "Testamos a parte lógica isolada como qualquer outra classe, independentemente do uso ou não do Mobx.",
+      "line": 8
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.test.ts",
+      "description": "Única novidade são os testes dos \"flows\", que são generators, mas nos testes precisamos tratalo de forma asyncrona, então o chamamos com \"await\", mas para isto precisamos antes resolver a tipagem e dizer que é uma Promise e não Generator.",
+      "line": 25
+    },
+    {
+      "file": "src/features/chats/presentation/components/Conversation/Conversation.test.tsx",
+      "description": "Também testamos a camada de apresentação com o mecanismo do mobx funcionando.",
+      "line": 14
+    },
+    {
+      "file": "src/features/chats/presentation/components/Conversation/Conversation.test.tsx",
+      "description": "A novidade é termos de tratar o \"flow\" do Mobx como sendo uma Promise, para isto precisamos realizar essa conversão de tipos, pois originalmente um flow é um generator.",
+      "line": 40
+    },
+    {
+      "title": "Como Mobx de encaixa na arquitetura?",
+      "description": "# Como mobx se encaixa na nova arquitetura?"
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.ts",
+      "description": "Definimos nossa classe gerenciadora de estado utilizando Mobx.",
+      "line": 7
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.ts",
+      "description": "Criamos um contexto para nosso controlador para garantir que não seja utilizado em lugares indevidos.",
+      "line": 44
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.ts",
+      "description": "Criamos um hook para consumirmos nosso controlador.",
+      "line": 46
+    },
+    {
+      "file": "src/features/users/controllers/UsersController.ts",
+      "description": "Disponibilizamos o provedor do nosso contexto.",
+      "line": 55
+    },
+    {
+      "file": "src/features/users/presentation/providers/UsersControllerProvider.tsx",
+      "description": "Definimos um provedor específico para o controlador.",
+      "line": 8
+    },
+    {
+      "file": "src/features/users/presentation/Users.tsx",
+      "description": "Envolvemos a raíz da nossa feature com o provedor do controlador para garantir que o controller seja acessível em toda a árvore de componentes da feature.",
+      "line": 12
+    },
+    {
+      "file": "src/features/users/presentation/components/UsersRoot/UsersRoot.tsx",
+      "description": "Consumimos o controlador onde precisarmos de seus recursos.",
+      "line": 13
+    },
+    {
+      "file": "src/features/users/presentation/components/User/User.tsx",
+      "description": "Aqui também.",
+      "line": 5
+    },
+    {
+      "file": "src/features/chats/domain/Chat.ts",
+      "description": "Às vezes uma classe domain também poderá ser controlada pelo Mobx.",
+      "line": 5
+    },
+    {
+      "file": "src/main/presentation/templates/Main.tsx",
+      "description": "Uso de nossas features.",
+      "line": 7
+    },
+    {
+      "title": "Casos excepcionais da arquitetura",
+      "description": "# Casos excepcionais da arquitetura\n\nCaso do Dynamic Forms com as functions specifics."
+    }
+  ]
+}

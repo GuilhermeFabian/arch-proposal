@@ -1,26 +1,15 @@
 import type { ReactElement } from "react";
-// import { Outlet, useNavigate } from "react-router-dom";
-// import { Chats } from "/features/chats/presentation";
-// import { Chats } from "../../../features/chats/presentation";
-// import { Users } from "@/features/users/presentation";
 import { Layout } from "@/ds/ui/structural/Layout/Layout";
 import { Users } from "@/features/users/presentation";
+import { Chats } from "@/features/chats/presentation";
+import { ChatsController } from "@/features/chats/controllers/ChatsController";
 
 export function Main(): ReactElement {
-  // const navigate = useNavigate();
+  const chatsController = new ChatsController();
 
   return (
-    <Layout leftSide={<Users />} rightSide={<div>RIGHT</div>}>
-      teste
+    <Layout rightSide={<Users onClickUser={chatsController.openChat} />}>
+      <Chats controller={chatsController} />
     </Layout>
-    // <div>
-    //   <Users />
-    //   <Chats />
-    //   <div>
-    //     <button onClick={() => navigate("/comp1")}>Comp1</button>
-    //     <button onClick={() => navigate("/comp2")}>Comp2</button>
-    //   </div>
-    //   <Outlet />
-    // </div>
   );
 }

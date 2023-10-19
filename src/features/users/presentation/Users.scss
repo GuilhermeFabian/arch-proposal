@@ -1,5 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .user-list {
   width: 100%;
-  min-width: 320px;
+  min-width: 250px;
+  max-width: 280px;
+  align-self: flex-end;
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+  padding: 8px 0px;
+  overflow-y: auto;
+  height: calc(100vh - 16px);
+}
+
+.user-title {
+  padding: 0px 16px 8px 16px;
+  color: #969696;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  font-weight: 600;
 }

@@ -1,13 +1,19 @@
-export class ChatMessage implements ChatMessageDTO {
+import { faker } from "@faker-js/faker";
+
+export class ChatMessage implements ChatMessageData {
   public readonly content: string = "";
   public readonly edited: boolean = false;
+  public readonly authored: boolean = false;
+  public readonly chatId: string = faker.string.uuid();
+  public readonly instanceId: string = faker.string.uuid();
 
-  public constructor(messageData: ChatMessageDTO) {
+  public constructor(messageData: ChatMessageData) {
     Object.assign(this, messageData);
   }
 }
 
-export interface ChatMessageDTO {
+export interface ChatMessageData {
   content: string;
-  edited: boolean;
+  authored: boolean;
+  chatId: string;
 }

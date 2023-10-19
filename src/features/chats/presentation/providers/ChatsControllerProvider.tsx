@@ -1,16 +1,20 @@
-import {
-  ChatsProvider,
-  useChatsController,
-} from "../../controllers/ChatsController";
+import { ChatsController } from "../../controllers/ChatsController";
+import { ChatsProvider } from "../../controllers/ChatsController";
 
 import type { ReactElement, ReactNode } from "react";
 
-export function ChatsControllerProvider({ children }: Props): ReactElement {
-  const chatsController = useChatsController();
-
-  return <ChatsProvider value={chatsController}>{children}</ChatsProvider>;
+export function ChatsControllerProvider({
+  children,
+  controller,
+}: Props): ReactElement {
+  return (
+    <ChatsProvider value={controller ?? new ChatsController()}>
+      {children}
+    </ChatsProvider>
+  );
 }
 
 type Props = {
   children?: ReactNode;
+  controller?: ChatsController;
 };

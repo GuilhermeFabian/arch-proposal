@@ -1,29 +1,25 @@
-// import { User } from "features/users/domain/User";
 import type { User } from "src/features/users/domain/User";
 import type { ChatMessage } from "./ChatMessage";
+import { faker } from "@faker-js/faker";
 
-export class Chat implements ChatDTO {
+export class Chat implements ChatData {
   public readonly user: User;
   public readonly messages: ChatMessage[] = [];
-  public readonly id: string = crypto.randomUUID();
+  public readonly id: string = "";
+  public readonly instanceId: string = faker.string.uuid();
   public state: State = "idle";
 
-  public constructor(chatData: ChatDTO) {
+  public constructor(chatData: ChatData) {
     this.user = chatData.user;
-
-    if (chatData.messages !== undefined) {
-      this.messages.push(...chatData.messages);
-    }
+    this.id = chatData.id ?? "";
+    this.messages.push(...(chatData.messages ?? []));
   }
-
-  // private *loadMessages(): Generator<> {
-
-  // }
 }
 
 type State = "idle" | "loading" | "ready" | "error";
 
-export interface ChatDTO {
+export interface ChatData {
   user: User;
   messages?: ChatMessage[];
+  id?: string;
 }

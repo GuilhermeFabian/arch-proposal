@@ -1,11 +1,16 @@
 import type { ReactElement } from "react";
 import { ChatsControllerProvider } from "./providers/ChatsControllerProvider";
-import { Chat } from "./components/Chat";
+import { ChatRoot } from "./components/ChatRoot";
+import type { ChatsController } from "../controllers/ChatsController";
 
-export function Chats(): ReactElement {
+export function Chats({ controller }: Props): ReactElement {
   return (
-    <ChatsControllerProvider>
-      <Chat />
+    <ChatsControllerProvider controller={controller}>
+      <ChatRoot />
     </ChatsControllerProvider>
   );
 }
+
+type Props = {
+  controller?: ChatsController;
+};
